@@ -1,23 +1,38 @@
-# Django settings for internshipPortal project.
+import os
+import sys
+from datetime import datetime
+from ConfigParser import ConfigParser
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__) + "/..")
+
+COPYRIGHT_YEAR = datetime.today().year
+#Basically, a configParser stores all data in a json-type format
+config = ConfigParser()
+config.read(os.path.join(PROJECT_DIR, 'internshipPortal/settings.ini'))
+
+DEBUG = config.get('debug', 'debug')
+TEMPLATE_DEBUG = config.get('debug', 'template_debug')
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Ranveer Aggarwal', 'ranveeraggarwal@gmail.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': config.get('database', 'engine'),
+        # Or path to database file if using sqlite3.
+        'NAME': config.get('database', 'db_name'),
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'USER': config.get('database', 'user'),
+        'PASSWORD': config.get('database', 'password'),
+        # Empty for localhost through domain sockets or '127.0.0.1' for
+        # localhost through TCP.
+        'HOST': config.get('database', 'host'),
+        # Set to empty string for default.
+        'PORT': config.get('database', 'port'),
     }
 }
 
@@ -29,7 +44,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Kolkata'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -50,28 +65,33 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'internshipPortal/media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'internshipPortal/staticfiles')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
+
+#Admin Static File URL Prefix
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, 'internshipPortal/static'),
+    os.path.join(PROJECT_DIR, 'signup/static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -83,7 +103,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'm!id^d+r%*i$c7&g@lfhqb%p&y7k148r4&l-$ql=^va=1s!-fx'
+SECRET_KEY = config.get('secrets', 'secret_key')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -102,15 +122,31 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'internshipPortal.urls'
+ROOT_URLCONF = config.get('server', 'root_urlconf')
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'internshipPortal.wsgi.application'
+WSGI_APPLICATION = config.get('server', 'wsgi_location')
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, 'internshipPortal/templates'),
+    os.path.join(PROJECT_DIR, 'signup/templates'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # default template context processors
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    # django 1.2 only
+    'django.contrib.messages.context_processors.messages',
+    # required by django-admin-tools
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'elearning_academy.context_processor.my_global_name'
 )
 
 INSTALLED_APPS = (
@@ -121,9 +157,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admindocs',
+
+    #Project Apps
+    'signup',
 )
 
 # A sample logging configuration. The only tangible logging
