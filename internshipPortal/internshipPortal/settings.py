@@ -146,7 +146,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # required by django-admin-tools
     'django.core.context_processors.request',
     'django.core.context_processors.static',
-    'elearning_academy.context_processor.my_global_name'
 )
 
 INSTALLED_APPS = (
