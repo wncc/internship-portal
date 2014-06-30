@@ -1,0 +1,26 @@
+[database]
+## Not required for sqlite3
+user                    = 
+## Not required for sqlite3
+password                = 
+## Not required for sqlite3
+host                    = localhost
+## Not required for sqlite3
+port                    = 80
+#'postgresql_psycopg2', 'mysql', 'sqlite3' 
+engine                  = django.db.backends.mysql
+db_name                 = internshipPortal
+
+[secrets]
+secret_key              = h_%-h$xum#$=$8a8%apg^v6e%u*$-7zfba59h)r498br%hn0#&
+
+[debug]
+debug                   = True
+template_debug          = True
+
+[server]
+ip                      = 127.0.0.1
+name                    = InternshipPortal
+title_icon              = /static/internshipPortal/img/favicon.ico
+root_urlconf            = internshipPortal.urls
+wsgi_location           = internshipPortal.wsgi.application

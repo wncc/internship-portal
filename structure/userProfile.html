@@ -1,0 +1,24 @@
+<html>
+	<head><title>{{ user.name }}</title></head>
+	
+	<body>
+	
+		<h1>{{ user.name }}</h1>
+		<br>
+		<p>Email: {{ user.email }} </p>
+		<p>Number: {{ user.number }}</p>
+		<p>
+			Skills:
+			<ul>
+				{% for skill in user.skills %}
+					<li> {{ skill }} </li>
+				{% endfor %}
+			</ul>
+		
+		</p>
+	<hr>
+	TO BE ADDED: <br>Editing information, eg. adding new skills
+	<br> Links to home, jobs, etc
+	</body>
+
+</html>

@@ -1,0 +1,30 @@
+<html>
+	<head><title>Job Listing</title></head>
+	
+	<body>
+	
+		<h1>{{ job.subject }}</h1>
+		<br>
+		<p>Description: {{ job.description }} </p>
+		<p>
+			Skills Desired:
+			<ul>
+				{% for skill in job.skills %}
+					<li> {{ skill }} </li>
+				{% endfor %}
+			</ul>
+		
+		</p>
+	<hr>
+	<p>
+		Job for: {{ job.company.name }} <br>
+		Find them at {{ job.company.website }}, 
+		or click
+		<a href="/companyProfile/{{ job.company.UID }}"> here </a> 
+		to view their contact details
+	</p>
+	TO BE ADDED: <br>Editing information, eg. adding new skills
+	<br> Links to home, jobs, etc
+	</body>
+
+</html>
